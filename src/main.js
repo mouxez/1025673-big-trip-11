@@ -1,5 +1,3 @@
-const ROUTE_COUNT = 3;
-
 import {createRoute} from './components/route';
 import {createRouteCost} from './components/route-cost';
 import {createMenu} from './components/menu';
@@ -8,6 +6,8 @@ import {createSorting} from './components/sorting';
 import {createTripOffer} from './components/trip-offer';
 import {createTripPoint} from './components/trip-point';
 import {createForm} from './components/form';
+
+const ROUTE_COUNT = 3;
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
