@@ -1,5 +1,17 @@
 import {getRandomInteger, getRandomArray} from '../util.js';
-import {ADDITIONAL_OFFERS, tripEvents, destinations, photos, description} from '../const.js';
+import {ADDITIONAL_OFFERS, tripEvents, tripActivities, destinations, descriptionList} from '../const.js';
+
+let moment = require(`moment`);
+moment().format();
+
+function getRandomPhotos(count) {
+  const photoList = [];
+  for (let i = 0; i < count; i++) {
+    photoList.push(`<img class="event__photo" src="http://picsum.photos/248/152?r=${Math.random()}" alt="Event photo"></img>`);
+  }
+
+  return photoList;
+}
 
 // массив опций городов
 function destinationOptions(array) {
@@ -13,25 +25,30 @@ function destinationOptions(array) {
 
 function eventOffer(array, offer) {
   const isChecked = () => array.indexOf(offer) > -1 ? `checked` : ``;
-  return (`<div class="event__offer-selector">
+  return (
+    `<div class="event__offer-selector">
   <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.name}-1" type="checkbox" name="event-offer-${offer.name}"} ${isChecked()} />
   <label class="event__offer-label" for="event-offer-${offer.name}-1">
     <span class="event__offer-title">${offer.description}</span>
     &plus;
     &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
   </label>
-</div>`);
+</div>`
+  );
 }
 
 // создаёт элементы точек маршрута транспорта
 function routePoint(point) {
-  return (`<div class="event__type-item">
+  return (
+    `<div class="event__type-item">
   <input id="event-type-${point.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${point.toLowerCase()}" />
   <label class="event__type-label  event__type-label--${point.toLowerCase()}" for="event-type-${point.toLowerCase()}-1">${point}</label>
-  </div>`);
+  </div>`
+  );
 }
 
-export function createForm() {
+export function createForm(item) {
+  const {eventType, activityType, destination, price, startTime, endTime, offers, description, photos} = item;
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -45,6 +62,7 @@ export function createForm() {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
+              ${eventType}
               ${routePoint(tripEvents[0])}
               ${routePoint(tripEvents[1])}
               ${routePoint(tripEvents[2])}
@@ -56,9 +74,10 @@ export function createForm() {
 
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Activity</legend>
-              ${routePoint(tripEvents[7])}
-              ${routePoint(tripEvents[8])}
-              ${routePoint(tripEvents[9])}
+              ${activityType}
+              ${routePoint(tripActivities[0])}
+              ${routePoint(tripActivities[1])}
+              ${routePoint(tripActivities[2])}
             </fieldset>
           </div>
         </div>
@@ -69,6 +88,7 @@ export function createForm() {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Copenhagen" list="destination-list-1">
           <datalist id="destination-list-1">
+            ${destination}
             ${destinationOptions(destinations)}
           </datalist>
         </div>
@@ -77,12 +97,12 @@ export function createForm() {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 00:00">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${moment.utc(new Date()).format(`DD/MM/YY HH:mm`)} ${startTime}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 00:00">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment.utc().add(getRandomInteger(1, 7), `d`).add(getRandomInteger(1, 24), `h`).add(getRandomInteger(1, 60), `m`).format(`DD/MM/YY HH:mm`)} ${endTime}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -90,7 +110,7 @@ export function createForm() {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${getRandomInteger(100, 1000)}">
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price} ${getRandomInteger(100, 1000)}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -101,6 +121,7 @@ export function createForm() {
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
+            ${offers}
             ${eventOffer(ADDITIONAL_OFFERS, ADDITIONAL_OFFERS[0])}
             ${eventOffer(ADDITIONAL_OFFERS, ADDITIONAL_OFFERS[1])}
             ${eventOffer(ADDITIONAL_OFFERS, ADDITIONAL_OFFERS[2])}
@@ -111,11 +132,15 @@ export function createForm() {
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${getRandomArray(description)}</p>
+          <p class="event__destination-description">
+          ${description}
+          ${getRandomArray(descriptionList)}
+          </p>
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-            ${getRandomArray(photos)}
+            ${photos}
+            ${getRandomArray(getRandomPhotos(5))}
            </div>
           </div>
 
@@ -125,4 +150,4 @@ export function createForm() {
   );
 }
 
-export {routePoint};
+export {routePoint, destinationOptions, eventOffer, getRandomPhotos};
