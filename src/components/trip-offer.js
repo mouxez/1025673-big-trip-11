@@ -25,8 +25,6 @@ export function createTripOffer() {
   return (
     `<ul class="trip-days">
       ${createTripOfferMarkup(`18 MAR`)}
-      ${createTripOfferMarkup(`19 MAR`)}
-      ${createTripOfferMarkup(`20 MAR`)}
     </ul>`
   );
 }
