@@ -9,11 +9,11 @@ function createSelectedOfferMarkup(array) {
   }).join(`\n`);
 }
 
-const formatDateValue = (value) => {
+function formatDateValue(value) {
   return String(value).padStart(2, `0`);
-};
+}
 
-const getEventDuration = (start, end) => {
+function getEventDuration(start, end) {
   const durationMs = end.getTime() - start.getTime();
   const durationTime = new Date(`1970-01-01T00:00`);
   durationTime.setMilliseconds(durationMs);
@@ -22,7 +22,7 @@ const getEventDuration = (start, end) => {
   const minutes = durationTime.getMinutes();
 
   return `${days > 0 ? formatDateValue(days) + `D` : ``} ${hours > 0 ? formatDateValue(hours) + `H` : ``} ${minutes > 0 ? formatDateValue(minutes) + `M` : ``}`;
-};
+}
 
 export function createTripPoint(item) {
   const {eventType, city, price, startTime, endTime, offers} = item;

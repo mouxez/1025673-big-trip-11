@@ -12,7 +12,6 @@ const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-// создаёт объекты с данными
 let listOfData = createData(DATA_COUNT);
 
 function sortByStartTime(a, b) {
