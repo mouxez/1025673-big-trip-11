@@ -1,3 +1,6 @@
+let moment = require(`moment`);
+moment().format();
+
 // массив случайных фотографий
 function getRandomPhotos(count) {
   const photoList = [];
@@ -96,12 +99,12 @@ function createForm(item) {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime.format(`DD/MM/YY HH:mm`)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime.format(`DD/MM/YY HH:mm`)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">

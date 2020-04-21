@@ -2,7 +2,6 @@ const filterOptions = [`Everything`, `Future`, `Past`];
 
 function createFilterMarkup(array) {
   return array.map((option) => {
-
     return (`<div class="trip-filters__filter">
     <input id="filter-${option.toLowerCase()}"
     class="trip-filters__filter-input  visually-hidden"
