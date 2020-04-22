@@ -1,15 +1,16 @@
-function sequence(start = 1, step = 1) {
+const sequence = (start = 1) => {
   let callNumber = start;
-  return function () {
+  return () => {
     let returnValue = callNumber;
-    callNumber += step;
+    callNumber++;
+
     return returnValue;
   };
-}
+};
 
-let generator = sequence(1, 1);
+let generator = sequence(1);
 
-function createTripOfferMarkup(date) {
+const createTripOfferMarkup = (date) => {
   return (`<li class="trip-days__item  day">
   <div class="day__info">
     <span class="day__counter">${generator()}</span>
@@ -18,13 +19,13 @@ function createTripOfferMarkup(date) {
   <ul class="trip-events__list">
   </ul>
 </li>`);
-}
+};
 
 // доработка счетчика даты
-export function createTripOffer() {
+export const createTripOffer = () => {
   return (
     `<ul class="trip-days">
       ${createTripOfferMarkup(`18 MAR`)}
     </ul>`
   );
-}
+};

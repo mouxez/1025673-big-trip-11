@@ -2,25 +2,25 @@ let moment = require(`moment`);
 moment().format();
 
 // массив случайных фотографий
-function getRandomPhotos(count) {
+const getRandomPhotos = (count) => {
   const photoList = [];
   for (let i = 0; i < count; i++) {
     photoList.push(`<img class="event__photo" src="http://picsum.photos/248/152?r=${Math.random()}" alt="Event photo"></img>`);
   }
   return photoList;
-}
+};
 
 // массив опций городов
-function getDestinationOptions(array) {
+const getDestinationOptions = (array) => {
   let listOfOptions = [];
   for (let i = 0; i < array.length; i++) {
     let option = `<option value="${array[i]}"></option>`;
     listOfOptions.push(option);
   }
   return listOfOptions.join(` `);
-}
+};
 
-function createOfferMarkup(array) {
+const createOfferMarkup = (array) => {
   return array.map((offer) => {
 
     return (
@@ -38,9 +38,9 @@ function createOfferMarkup(array) {
   </div>`
     );
   }).join(`\n`);
-}
+};
 
-function createForm(item) {
+const createForm = (item) => {
   const {eventType, activityType, destination, price, startTime, endTime, offers, description, photos, city} = item;
   const offersList = createOfferMarkup(offers);
 
@@ -144,6 +144,6 @@ function createForm(item) {
       </section>
     </form>`
   );
-}
+};
 
 export {getDestinationOptions, getRandomPhotos, createForm};

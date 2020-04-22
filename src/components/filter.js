@@ -1,6 +1,6 @@
 const filterOptions = [`Everything`, `Future`, `Past`];
 
-function createFilterMarkup(array) {
+const createFilterMarkup = (array) => {
   return array.map((option) => {
     return (`<div class="trip-filters__filter">
     <input id="filter-${option.toLowerCase()}"
@@ -11,9 +11,9 @@ function createFilterMarkup(array) {
     for="filter-${option.toLowerCase()}">${option}</label>
   </div>`);
   }).join(`\n`);
-}
+};
 
-export function createFilter() {
+export const createFilter = () => {
   const filterValues = createFilterMarkup(filterOptions);
 
   return (
@@ -22,4 +22,4 @@ export function createFilter() {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
   );
-}
+};

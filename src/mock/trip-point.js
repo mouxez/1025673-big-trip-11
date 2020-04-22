@@ -5,7 +5,7 @@ import {getRandomEl, getRandomInteger, getRandomArray} from '../util.js';
 let moment = require(`moment`);
 moment().format();
 
-function generateOfferList() {
+const generateOfferList = () => {
   const result = [];
   const count = getRandomInteger(0, 5);
 
@@ -18,9 +18,9 @@ function generateOfferList() {
     });
   }
   return result;
-}
+};
 
-function createCard() {
+const createCard = () => {
   return {
     eventType: getRandomEl(tripEvents),
     activityType: getRandomEl(tripActivities),
@@ -33,12 +33,12 @@ function createCard() {
     description: getRandomArray(descriptionList),
     photos: getRandomArray(getRandomPhotos(5)),
   };
-}
+};
 
-function createData(count) {
+const createData = (count) => {
   return new Array(count)
   .fill(``)
   .map(createCard);
-}
+};
 
 export {createData};

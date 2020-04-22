@@ -1,4 +1,4 @@
-function createSelectedOfferMarkup(array) {
+const createSelectedOfferMarkup = (array) => {
   return array.map((offer) => {
 
     return (`<li class="event__offer">
@@ -7,13 +7,13 @@ function createSelectedOfferMarkup(array) {
     &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
   </li>`);
   }).join(`\n`);
-}
+};
 
-function formatDateValue(value) {
+const formatDateValue = (value) => {
   return String(value).padStart(2, `0`);
-}
+};
 
-function getEventDuration(start, end) {
+const getEventDuration = (start, end) => {
   const durationMs = end.getTime() - start.getTime();
   const durationTime = new Date(`1970-01-01T00:00`);
   durationTime.setMilliseconds(durationMs);
@@ -21,10 +21,14 @@ function getEventDuration(start, end) {
   const hours = durationTime.getHours();
   const minutes = durationTime.getMinutes();
 
-  return `${days > 0 ? formatDateValue(days) + `D` : ``} ${hours > 0 ? formatDateValue(hours) + `H` : ``} ${minutes > 0 ? formatDateValue(minutes) + `M` : ``}`;
-}
+  const dayFormated = days > 0 ? formatDateValue(days) + `D` : ``;
+  const hourFormated = hours > 0 ? formatDateValue(hours) + `H` : ``;
+  const minuteFormated = minutes > 0 ? formatDateValue(minutes) + `M` : ``;
 
-export function createTripPoint(item) {
+  return `${dayFormated} ${hourFormated} ${minuteFormated}`;
+};
+
+export const createTripPoint = (item) => {
   const {eventType, city, price, startTime, endTime, offers} = item;
   const selectedOffers = createSelectedOfferMarkup(offers);
   const eventDuration = getEventDuration(startTime.toDate(), endTime.toDate());
@@ -57,4 +61,4 @@ export function createTripPoint(item) {
     </div>
   </li>`
   );
-}
+};

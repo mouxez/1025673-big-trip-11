@@ -14,11 +14,11 @@ const render = (container, template, place = `beforeend`) => {
 
 let listOfData = createData(DATA_COUNT);
 
-function sortByStartTime(a, b) {
+const sortByStartTime = (a, b) => {
   let dateA = new Date(a.startTime.toDate()).getTime();
   let dateB = new Date(b.startTime.toDate()).getTime();
   return dateA > dateB ? 1 : -1;
-}
+};
 
 let sortedByStartTime = listOfData.sort(sortByStartTime);
 

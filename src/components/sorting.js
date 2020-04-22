@@ -1,6 +1,6 @@
 const sortingList = [`Event`, `Time`, `Price`];
 
-function createSortingMarkup(array) {
+const createSortingMarkup = (array) => {
   return array.map((value) => {
 
     return (`<div class="trip-sort__item  trip-sort__item--${value.toLowerCase()}">
@@ -10,10 +10,11 @@ function createSortingMarkup(array) {
     </label>
     </div>`);
   }).join(`\n`);
-}
+};
 
-export function createSorting() {
+export const createSorting = () => {
   const sortingItems = createSortingMarkup(sortingList);
+
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <span class="trip-sort__item  trip-sort__item--day">Day</span>
@@ -21,4 +22,4 @@ export function createSorting() {
       <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
     </form>`
   );
-}
+};
