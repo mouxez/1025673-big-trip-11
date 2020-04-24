@@ -1,7 +1,8 @@
+import {createElement} from '../util.js';
+
 let moment = require(`moment`);
 moment().format();
 
-// массив случайных фотографий
 const getRandomPhotos = (count) => {
   const photoList = [];
   for (let i = 0; i < count; i++) {
@@ -10,7 +11,6 @@ const getRandomPhotos = (count) => {
   return photoList;
 };
 
-// массив опций городов
 const getDestinationOptions = (array) => {
   let listOfOptions = [];
   for (let i = 0; i < array.length; i++) {
@@ -40,7 +40,7 @@ const createOfferMarkup = (array) => {
   }).join(`\n`);
 };
 
-const createForm = (item) => {
+const tripEdit = (item) => {
   const {eventType, activityType, destination, price, startTime, endTime, offers, description, photos, city} = item;
   const offersList = createOfferMarkup(offers);
 
@@ -146,4 +146,23 @@ const createForm = (item) => {
   );
 };
 
-export {getDestinationOptions, getRandomPhotos, createForm};
+export default class TripEdit {
+  constructor(item) {
+    this._item = item;
+    this._element = null;
+  }
+  getTemplate() {
+    return tripEdit(this._item);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export {getDestinationOptions, getRandomPhotos};
