@@ -6,7 +6,7 @@ import TripPointComponent from './components/trip-point.js';
 import TripEditComponent from './components/trip-edit.js';
 import {MAX_ROUTE_COUNT, DATA_COUNT} from '../src/const.js';
 import {createData} from './mock/trip-point.js';
-import {getRandomInteger, RenderPosition, render, sortByStartTime, replace} from './util.js';
+import {getRandomInteger, RenderPosition, render, sortByStartTime} from './util.js';
 
 let listOfData = createData(DATA_COUNT);
 let sortedByStartTime = listOfData.sort(sortByStartTime);
@@ -23,21 +23,20 @@ render(tripEvent, new TripOfferComponent().getElement(), RenderPosition.BEFOREEN
 const tripEventPoint = document.querySelector(`.trip-events__list`);
 
 for (let i = 0; i < getRandomInteger(1, MAX_ROUTE_COUNT); i++) {
-  // получаю текущие компоненты с индексом
-  let tripPoint = new TripPointComponent(sortedByStartTime[i]);
-  let tripEdit = new TripEditComponent(sortedByStartTime[i]);
-  // логика при нажатии на кнопку редакторования
-  const onEditButtonClick = () => {
-    replace(tripPoint.getElement(), tripEdit.getElement());
-  };
-  // логика при сохранении формы
+  let tripPointComponent = new TripPointComponent(sortedByStartTime[i]).getElement();
+  let tripEditComponent = new TripEditComponent(sortedByStartTime[i]).getElement();
+
+  render(tripEventPoint, tripPointComponent, RenderPosition.BEFOREEND);
+
   const onEditFormSubmit = (evt) => {
     evt.preventDefault();
-    replace(tripEdit.getElement(), tripPoint.getElement());
+    tripEventPoint.replaceChild(tripPointComponent, tripEditComponent);
   };
-  // устанавливает обработчики компонентам
-  tripPoint.setClickHandler(onEditButtonClick);
-  tripEdit.setSubmitHandler(onEditFormSubmit);
-  // отрисовывает точки маршрута
-  render(tripEventPoint, tripPoint, RenderPosition.BEFOREEND);
+
+  const onEditButtonClick = () => {
+    tripEventPoint.replaceChild(tripEditComponent, tripPointComponent);
+    tripEditComponent.querySelector(`.event__save-btn`).addEventListener(`click`, onEditFormSubmit);
+  };
+
+  tripPointComponent.querySelector(`.event__rollup-btn`).addEventListener(`click`, onEditButtonClick);
 }

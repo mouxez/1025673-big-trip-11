@@ -160,9 +160,6 @@ export default class TripEdit {
     }
     return this._element;
   }
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
-  }
   removeElement() {
     this._element = null;
   }

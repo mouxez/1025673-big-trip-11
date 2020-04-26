@@ -79,9 +79,6 @@ export default class TripPoint {
     }
     return this._element;
   }
-  setClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-  }
   removeElement() {
     this._element = null;
   }
