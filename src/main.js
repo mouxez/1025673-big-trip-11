@@ -1,37 +1,42 @@
-import {createMenu} from './components/menu.js';
-import {createFilter} from './components/filter.js';
-import {createSorting} from './components/sorting.js';
-import {createTripOffer} from './components/trip-offer.js';
-import {createTripPoint} from './components/trip-point.js';
-import {createForm} from './components/trip-edit.js';
+import MenuComponent from './components/menu.js';
+import FilterComponent from './components/filter.js';
+import SortingComponent from './components/sorting.js';
+import TripOfferComponent from './components/trip-offer.js';
+import TripPointComponent from './components/trip-point.js';
+import TripEditComponent from './components/trip-edit.js';
 import {MAX_ROUTE_COUNT, DATA_COUNT} from '../src/const.js';
 import {createData} from './mock/trip-point.js';
-import {getRandomInteger} from './util.js';
-
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
+import {getRandomInteger, RenderPosition, render, sortByStartTime} from './util.js';
 
 let listOfData = createData(DATA_COUNT);
-
-const sortByStartTime = (a, b) => {
-  let dateA = new Date(a.startTime.toDate()).getTime();
-  let dateB = new Date(b.startTime.toDate()).getTime();
-  return dateA > dateB ? 1 : -1;
-};
-
 let sortedByStartTime = listOfData.sort(sortByStartTime);
 
 const tripControls = document.querySelector(`.trip-controls`);
 const tripEvent = document.querySelector(`.trip-events`);
 
-render(tripEvent, createSorting());
-render(tripEvent, createForm(sortedByStartTime[0]));
-render(tripEvent, createTripOffer());
-render(tripControls, createMenu());
-render(tripControls, createFilter());
+render(tripControls, new MenuComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripControls, new FilterComponent().getElement(), RenderPosition.BEFOREEND);
+
+render(tripEvent, new SortingComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripEvent, new TripOfferComponent().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventPoint = document.querySelector(`.trip-events__list`);
+
 for (let i = 0; i < getRandomInteger(1, MAX_ROUTE_COUNT); i++) {
-  render(tripEventPoint, createTripPoint(sortedByStartTime[i]));
+  let tripPointComponent = new TripPointComponent(sortedByStartTime[i]).getElement();
+  let tripEditComponent = new TripEditComponent(sortedByStartTime[i]).getElement();
+
+  render(tripEventPoint, tripPointComponent, RenderPosition.BEFOREEND);
+
+  const onEditFormSubmit = (evt) => {
+    evt.preventDefault();
+    tripEventPoint.replaceChild(tripPointComponent, tripEditComponent);
+  };
+
+  const onEditButtonClick = () => {
+    tripEventPoint.replaceChild(tripEditComponent, tripPointComponent);
+    tripEditComponent.addEventListener(`submit`, onEditFormSubmit);
+  };
+
+  tripPointComponent.querySelector(`.event__rollup-btn`).addEventListener(`click`, onEditButtonClick);
 }

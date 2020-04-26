@@ -1,3 +1,5 @@
+import {createElement} from '../util.js';
+
 const createSelectedOfferMarkup = (array) => {
   return array.map((offer) => {
 
@@ -28,7 +30,7 @@ const getEventDuration = (start, end) => {
   return `${dayFormated} ${hourFormated} ${minuteFormated}`;
 };
 
-export const createTripPoint = (item) => {
+const createTripPoint = (item) => {
   const {eventType, city, price, startTime, endTime, offers} = item;
   const selectedOffers = createSelectedOfferMarkup(offers);
   const eventDuration = getEventDuration(startTime.toDate(), endTime.toDate());
@@ -62,3 +64,22 @@ export const createTripPoint = (item) => {
   </li>`
   );
 };
+
+export default class TripPoint {
+  constructor(item) {
+    this._item = item;
+    this._element = null;
+  }
+  getTemplate() {
+    return createTripPoint(this._item);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

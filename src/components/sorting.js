@@ -1,3 +1,5 @@
+import {createElement} from '../util.js';
+
 const sortingList = [`Event`, `Time`, `Price`];
 
 const createSortingMarkup = (array) => {
@@ -12,7 +14,7 @@ const createSortingMarkup = (array) => {
   }).join(`\n`);
 };
 
-export const createSorting = () => {
+const createSorting = () => {
   const sortingItems = createSortingMarkup(sortingList);
 
   return (
@@ -23,3 +25,21 @@ export const createSorting = () => {
     </form>`
   );
 };
+
+export default class Sorting {
+  constructor() {
+    this._element = null;
+  }
+  getTemplate() {
+    return createSorting();
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

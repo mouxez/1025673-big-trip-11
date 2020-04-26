@@ -1,3 +1,5 @@
+import {createElement} from '../util.js';
+
 const sequence = (start = 1) => {
   let callNumber = start;
   return () => {
@@ -21,11 +23,28 @@ const createTripOfferMarkup = (date) => {
 </li>`);
 };
 
-// доработка счетчика даты
-export const createTripOffer = () => {
+const createTripOffer = () => {
   return (
     `<ul class="trip-days">
       ${createTripOfferMarkup(`18 MAR`)}
     </ul>`
   );
 };
+
+export default class TripOffer {
+  constructor() {
+    this._element = null;
+  }
+  getTemplate() {
+    return createTripOffer();
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
