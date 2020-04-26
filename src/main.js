@@ -35,7 +35,7 @@ for (let i = 0; i < getRandomInteger(1, MAX_ROUTE_COUNT); i++) {
 
   const onEditButtonClick = () => {
     tripEventPoint.replaceChild(tripEditComponent, tripPointComponent);
-    tripEditComponent.querySelector(`.event__save-btn`).addEventListener(`click`, onEditFormSubmit);
+    tripEditComponent.addEventListener(`submit`, onEditFormSubmit);
   };
 
   tripPointComponent.querySelector(`.event__rollup-btn`).addEventListener(`click`, onEditButtonClick);
