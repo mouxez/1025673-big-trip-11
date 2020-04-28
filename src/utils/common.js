@@ -13,28 +13,6 @@ const getRandomEl = (array) => {
   return array[el];
 };
 
-const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
-const RenderPosition = {
-  BEFOREEND: `beforeend`
-};
-
-const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
 const sortByStartTime = (a, b) => {
   let dateA = new Date(a.startTime.toDate()).getTime();
   let dateB = new Date(b.startTime.toDate()).getTime();
@@ -45,8 +23,5 @@ export {
   getRandomInteger,
   getRandomArray,
   getRandomEl,
-  createElement,
-  RenderPosition,
-  render,
-  sortByStartTime
+  sortByStartTime,
 };

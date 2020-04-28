@@ -7,7 +7,8 @@ import TripEditComponent from './components/trip-edit.js';
 import NoTripPointsComponent from './components/no-trip-points.js';
 import {MAX_ROUTE_COUNT, DATA_COUNT} from '../src/const.js';
 import {createData} from './mock/trip-point.js';
-import {getRandomInteger, RenderPosition, render, sortByStartTime} from './util.js';
+import {getRandomInteger, sortByStartTime} from './utils/common.js';
+import {RenderPosition, render} from './utils/render.js';
 
 let listOfData = createData(DATA_COUNT);
 let sortedByStartTime = listOfData.sort(sortByStartTime);
@@ -54,9 +55,9 @@ for (let i = 0; i < getRandomInteger(0, MAX_ROUTE_COUNT); i++) {
 
 const listOfPoints = Array.from(document.querySelectorAll(`.trip-events__item`));
 const tripEvents = document.querySelector(`.trip-events`);
+
 const renderNoPointsMessage = (array) => {
-  const noPointsLength = array.length;
-  if (noPointsLength === 0) {
+  if (array.length === 0) {
     document.querySelector(`.trip-days__item`).remove();
     document.querySelector(`.trip-sort`).remove();
     render(tripEvents, new NoTripPointsComponent().getElement(), RenderPosition.BEFOREEND);
