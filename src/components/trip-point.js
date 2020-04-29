@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const createSelectedOfferMarkup = (array) => {
   return array.map((offer) => {
@@ -65,21 +65,15 @@ const createTripPoint = (item) => {
   );
 };
 
-export default class TripPoint {
+export default class TripPoint extends AbstractComponent {
   constructor(item) {
+    super();
     this._item = item;
-    this._element = null;
   }
   getTemplate() {
     return createTripPoint(this._item);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }

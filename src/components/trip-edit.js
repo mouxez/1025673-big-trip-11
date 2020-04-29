@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 let moment = require(`moment`);
 moment().format();
@@ -146,22 +146,16 @@ const tripEdit = (item) => {
   );
 };
 
-export default class TripEdit {
+export default class TripEdit extends AbstractComponent {
   constructor(item) {
+    super();
     this._item = item;
-    this._element = null;
   }
   getTemplate() {
     return tripEdit(this._item);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
   }
 }
 

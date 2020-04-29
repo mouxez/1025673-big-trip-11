@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const filterOptions = [`Everything`, `Future`, `Past`];
 
@@ -26,20 +26,8 @@ const createFilter = () => {
   );
 };
 
-export default class Filter {
-  constructor() {
-    this._element = null;
-  }
+export default class Filter extends AbstractComponent {
   getTemplate() {
     return createFilter();
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

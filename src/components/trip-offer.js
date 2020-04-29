@@ -1,4 +1,4 @@
-import {createElement} from '../utils/render.js';
+import AbstractComponent from './abstract-component.js';
 
 const sequence = (start = 1) => {
   let callNumber = start;
@@ -31,20 +31,8 @@ const createTripOffer = () => {
   );
 };
 
-export default class TripOffer {
-  constructor() {
-    this._element = null;
-  }
+export default class TripOffer extends AbstractComponent {
   getTemplate() {
     return createTripOffer();
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }
