@@ -1,4 +1,4 @@
-import {createElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
 const createNoTripPointsMarkup = () => {
   return (
@@ -6,20 +6,8 @@ const createNoTripPointsMarkup = () => {
   );
 };
 
-export default class NoTripPoints {
-  constructor() {
-    this._element = null;
-  }
+export default class NoTripPoints extends AbstractComponent {
   getTemplate() {
     return createNoTripPointsMarkup();
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

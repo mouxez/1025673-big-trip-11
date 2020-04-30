@@ -1,6 +1,6 @@
 import {getDestinationOptions, getRandomPhotos} from '../components/trip-edit.js';
 import {tripEvents, tripActivities, destinations, ADDITIONAL_OFFERS, descriptionList} from '../const.js';
-import {getRandomEl, getRandomInteger, getRandomArray} from '../util.js';
+import {getRandomEl, getRandomInteger, getRandomArray} from '../utils/common.js';
 
 let moment = require(`moment`);
 moment().format();
