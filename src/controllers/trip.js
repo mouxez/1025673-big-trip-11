@@ -53,6 +53,10 @@ export default class Controller {
       };
       tripPointComponent.setEditButtonClickHandler(onEditButtonClick);
     });
+    this._sortingComponent.setSortTypeChangeHandler(() => {
+      const tripEventPoint = document.querySelector(`.trip-events__list`);
+      tripEventPoint.innerHTML = ``;
+    });
   }
   renderCreateFirstPointMessage(nodeArray) {
     const tripEvents = document.querySelector(`.trip-events`);
