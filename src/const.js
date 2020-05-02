@@ -12,6 +12,11 @@ const descriptionList = [`Lorem ipsum dolor sit amet, consectetur adipiscing eli
   `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
   `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`, `Nunc fermentum tortor ac porta dapibus.`,
   `In rutrum ac purus sit amet tempus.`];
+const SortType = {
+  EVENT: `Event`,
+  TIME: `Time`,
+  PRICE: `Price`,
+};
 
 export {
   ADDITIONAL_OFFERS,
@@ -19,5 +24,6 @@ export {
   tripActivities,
   destinations,
   descriptionList,
-  MAX_ROUTE_COUNT, DATA_COUNT
+  MAX_ROUTE_COUNT, DATA_COUNT,
+  SortType,
 };
