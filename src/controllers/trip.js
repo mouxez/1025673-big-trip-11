@@ -1,6 +1,6 @@
 import {render, RenderPosition, replace, remove} from '../utils/render.js';
 import {getRandomInteger} from '../utils/common.js';
-import {MAX_ROUTE_COUNT} from '../const.js';
+import {MAX_ROUTE_COUNT, SortType} from '../const.js';
 import {sortedByStartTime} from '../main.js';
 import TripPointComponent from '../components/trip-point.js';
 import TripEditComponent from '../components/trip-edit.js';
@@ -10,7 +10,58 @@ import SortingComponent from '../components/sorting.js';
 import TripOfferComponent from '../components/trip-offer.js';
 import NoTripPointsComponent from '../components/no-trip-points.js';
 
+// Вынес логику рендеринга точек маршрута в отдельную функцию
+
+const renderTripPoints = (array) => {
+  array.slice(0, getRandomInteger(0, MAX_ROUTE_COUNT)).forEach((i) => {
+    let tripPointComponent = new TripPointComponent(i);
+    let tripEditComponent = new TripEditComponent(i);
+    const tripEventPoint = document.querySelector(`.trip-events__list`);
+
+    render(tripEventPoint, tripPointComponent, RenderPosition.BEFOREEND);
+
+    const onEditFormSubmit = (evt) => {
+      evt.preventDefault();
+      replace(tripPointComponent, tripEditComponent);
+      tripEditComponent.getElement().removeEventListener(`submit`, onEditFormSubmit);
+    };
+    const onEscKeyDown = (evt) => {
+      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+      if (isEscKey) {
+        replace(tripPointComponent, tripEditComponent);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+    const onEditButtonClick = () => {
+      replace(tripEditComponent, tripPointComponent);
+      tripEditComponent.setSubmitHandler(onEditFormSubmit);
+      document.addEventListener(`keydown`, onEscKeyDown);
+    };
+    tripPointComponent.setEditButtonClickHandler(onEditButtonClick);
+  });
+};
+// создал функцию сортировки точек маршрута
+
+const getSortedTripPoints = (array, sortType) => {
+  let sortedPoints = [];
+  const pointsToSort = array.slice();
+
+  switch (sortType) {
+    case SortType.PRICE:
+      sortedPoints = pointsToSort.sort((a, b) => a.price - b.price);
+      break;
+    case SortType.TIME:
+      sortedPoints = pointsToSort.sort((a, b) => a.startTime.toDate() - b.startTime.toDate());
+      break;
+    case SortType.EVENT:
+      sortedPoints = pointsToSort;
+  }
+  return sortedPoints;
+};
+
 const tripEvent = document.querySelector(`.trip-events`);
+
+// перенёс рендеринг всех компонентов в контроллер для удобства работы с ними
 
 export default class Controller {
   constructor(container) {
@@ -27,35 +78,16 @@ export default class Controller {
     render(tripEvent, this._sortingComponent, RenderPosition.BEFOREEND);
     render(tripEvent, this._tripOfferComponent, RenderPosition.BEFOREEND);
 
-    sortedByStartTime.slice(0, getRandomInteger(0, MAX_ROUTE_COUNT)).forEach((i) => {
-      let tripPointComponent = new TripPointComponent(i);
-      let tripEditComponent = new TripEditComponent(i);
-      const tripEventPoint = document.querySelector(`.trip-events__list`);
-
-      render(tripEventPoint, tripPointComponent, RenderPosition.BEFOREEND);
-
-      const onEditFormSubmit = (evt) => {
-        evt.preventDefault();
-        replace(tripPointComponent, tripEditComponent);
-        tripEditComponent.getElement().removeEventListener(`submit`, onEditFormSubmit);
-      };
-      const onEscKeyDown = (evt) => {
-        const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-        if (isEscKey) {
-          replace(tripPointComponent, tripEditComponent);
-          document.removeEventListener(`keydown`, onEscKeyDown);
-        }
-      };
-      const onEditButtonClick = () => {
-        replace(tripEditComponent, tripPointComponent);
-        tripEditComponent.setSubmitHandler(onEditFormSubmit);
-        document.addEventListener(`keydown`, onEscKeyDown);
-      };
-      tripPointComponent.setEditButtonClickHandler(onEditButtonClick);
-    });
+    renderTripPoints(sortedByStartTime);
+    // добавляет слушатель клика компоненту Sorting
     this._sortingComponent.setSortTypeChangeHandler(() => {
-      const tripEventPoint = document.querySelector(`.trip-events__list`);
-      tripEventPoint.innerHTML = ``;
+      const sortedTripPoints = getSortedTripPoints(sortedByStartTime, this._sortComponent.getSortType());
+      // собираю отрисованные точки маршрута и удаляю их
+      document.querySelectorAll(`.trip-events__item`).forEach((item) => {
+        item.remove();
+      });
+      // отрисовываю отсортированные точки
+      renderTripPoints(sortedTripPoints);
     });
   }
   renderCreateFirstPointMessage(nodeArray) {
