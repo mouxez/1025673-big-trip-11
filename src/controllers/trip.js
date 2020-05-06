@@ -98,4 +98,25 @@ export default class Controller {
       render(tripEvents, this._noTripPointsComponent, RenderPosition.BEFOREEND);
     }
   }
+  _onSortTypeChange(sortType) {
+    this._tripDaysComponent.getElement().innerHTML = ``;
+    const sortedEvents = getSortedTripPoints(this._events, sortType, 0, this._events.length);
+    this.renderTripDays(sortedEvents);
+
+  }
+  _onDataChange(pointController, oldData, newData) {
+    const index = this._events.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
+
+    pointController.render(this._events[index]);
+  }
+  _onViewChange() {
+    this._showedEventControllers.forEach((it) => it.setDefaultView());
+
+  }
 }
