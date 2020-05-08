@@ -1,4 +1,4 @@
-import AbstractSmartComponent from "./abstract-smart-component.js";
+import AbstractComponent from './abstract-component.js';
 
 let moment = require(`moment`);
 moment().format();
@@ -146,7 +146,7 @@ const tripEdit = (item) => {
   );
 };
 
-export default class TripEdit extends AbstractSmartComponent {
+export default class TripEdit extends AbstractComponent {
   constructor(item) {
     super();
     this._item = item;
