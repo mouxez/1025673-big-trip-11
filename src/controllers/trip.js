@@ -99,9 +99,10 @@ export default class Controller {
     }
   }
   _onSortTypeChange(sortType) {
-    this._tripPointComponent.getElement().innerHTML = ``;
+    this._tripDaysComponent.getElement().innerHTML = ``;
     const sortedEvents = getSortedTripPoints(this._events, sortType, 0, this._events.length);
-    this.renderTripPoints(sortedEvents);
+    this.renderTripDays(sortedEvents);
+
   }
   _onDataChange(pointController, oldData, newData) {
     const index = this._events.findIndex((it) => it === oldData);
@@ -116,5 +117,6 @@ export default class Controller {
   }
   _onViewChange() {
     this._showedEventControllers.forEach((it) => it.setDefaultView());
+
   }
 }

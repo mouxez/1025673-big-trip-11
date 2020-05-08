@@ -1,6 +1,6 @@
 import AbstractComponent from "../components/abstract-component.js";
-import TripPointComponent from "../components/trip-point.js";
-import TripEditComponent from "../components/trip-edit.js";
+import EventComponent from "../components/event.js";
+import EventEditComponent from "../components/event-edit.js";
 import {RenderPosition, render, replace} from "../utils/render.js";
 
 const Mode = {
@@ -15,57 +15,63 @@ export default class PointController extends AbstractComponent {
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
-    this._tripPointComponent = null;
-    this._tripEditComponent = null;
+    this._eventComponent = null;
+    this._eventEditComponent = null;
     this._mode = Mode.DEFAULT;
+
   }
 
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.ket === `Esc`;
     if (isEscKey) {
-      replace(this._tripPointComponent, this._tripEditComponent);
+      replace(this._eventComponent, this._eventEditComponent);
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   }
 
-  render(point) {
-    const oldEventComponent = this._tripPointComponent;
-    const oldEventEditComponent = this._tripEditComponent;
+  render(event) {
+    const oldEventComponent = this._eventComponent;
+    const oldEventEditComponent = this._eventEditComponent;
 
-    this._tripPointComponent = new TripPointComponent(point);
-    this._tripEditComponent = new TripEditComponent(point);
+    this._eventComponent = new EventComponent(event);
+    this._eventEditComponent = new EventEditComponent(event);
 
-    this._tripPointComponent.setRollupBtnClickHandler(() => {
+    this._eventComponent.setRollupBtnClickHandler(() => {
       this._replaceEventToEdit();
     });
 
-    this._tripEditComponent.setRollupBtnClickHandler(() => {
+    this._eventEditComponent.setRollupBtnClickHandler(() => {
       this._replaceEditToEvent();
     });
 
-    this._tripEditComponent.setFavoriteClickHandler(() => {
+    this._eventEditComponent.setFavoriteClickHandler(() => {
       this._onDataChange(this, event, Object.assign({}, event, {
         isFavorite: !event.isFavorite,
       }));
     });
 
     if (oldEventEditComponent && oldEventComponent) {
-      replace(this._tripPointComponent, oldEventComponent);
-      replace(this._tripEditComponent, oldEventEditComponent);
+      replace(this._eventComponent, oldEventComponent);
+      replace(this._eventEditComponent, oldEventEditComponent);
     } else {
-      render(this._container, this._tripPointComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
     }
   }
+
   _replaceEventToEdit() {
     this._onViewChange();
-    replace(this._tripEditComponent, this._tripPointComponent);
+    replace(this._eventEditComponent, this._eventComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.EDIT;
   }
+
   _replaceEditToEvent() {
-    replace(this._tripPointComponent, this._tripEditComponent);
+
+    replace(this._eventComponent, this._eventEditComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
+
   }
+
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToEvent();
