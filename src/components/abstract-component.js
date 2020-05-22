@@ -1,4 +1,5 @@
 import {createElement} from "./../util.js";
+
 export default class AbstractComponent {
   constructor() {
     if (new.target === AbstractComponent) {
