@@ -17,11 +17,7 @@ export default class Event extends AbstractComponent {
     this._price = price;
     this._start = new Date(start);
     this._end = new Date(end);
-
     this._offers = offers.filter((it) => it.accepted);
-
-    this._hours = Math.trunc((end - start) / 1000 / 60 / 60);
-    this._minutes = Math.trunc(((end - start) / 1000 / 60 / 60 - this._hours) * 60);
   }
   _getDuration(startTime, endTime) {
     const start = moment(startTime);
@@ -59,7 +55,6 @@ export default class Event extends AbstractComponent {
       &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
      </li>`).join(``)}
       </ul>
-
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>

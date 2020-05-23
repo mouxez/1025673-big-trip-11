@@ -4,12 +4,7 @@ import Message from './../components/message.js';
 import Sort from './../components/sort.js';
 import EventController from './event-controller';
 import SortContainer from './../components/sort-container';
-import {
-  remove
-} from './../util.js';
-import {
-  getEventsInDays
-} from './../util.js';
+import {getEventsInDays, TYPES_OF_EVENT, ModeType, remove} from './../util.js';
 
 export default class TripController {
   constructor(container, onDataChange) {
@@ -88,12 +83,9 @@ export default class TripController {
   }
 
   createEvent(addButton) {
-    if (this._creatingEvent) {
-      return;
-    }
     const defaultEvent = {
-      type: ``,
-      city: ``,
+      type: TYPES_OF_EVENT[0],
+      destination: ``,
       price: 0,
       start: new Date(),
       end: new Date(),
@@ -107,8 +99,7 @@ export default class TripController {
     }
     this._addButton = addButton;
     const eventsListContainer = this._container.querySelector(`.trip-sort`);
-    this._creatingEvent = new EventController(defaultEvent, `add`, eventsListContainer, (...args) => {
-      this._creatingEvent = null;
+    this._creatingEvent = new EventController(defaultEvent, ModeType.ADD, eventsListContainer, (...args) => {
       this._addButton.disabled = false;
       this._onDataChange(...args);
     }, this.onChangeView);
@@ -122,7 +113,8 @@ export default class TripController {
     remove(this._daysList.getElement());
     this._daysList.removeElement();
     this._container.append(this._daysList.getElement());
-    const eventsInDays = getEventsInDays(events.sort((a, b) => a.start - b.start));
+    const sortedEvents = events.sort((a, b) => a.start - b.start);
+    const eventsInDays = getEventsInDays(sortedEvents);
 
     const datesData = Object.keys(eventsInDays);
     datesData.forEach((date, index) => {
@@ -146,7 +138,7 @@ export default class TripController {
     });
   }
   _renderEvent(eventData, eventsListContainer) {
-    const eventController = new EventController(eventData, `default`, eventsListContainer, this._onDataChange, this.onChangeView);
+    const eventController = new EventController(eventData, ModeType.DEFAULT, eventsListContainer, this._onDataChange, this.onChangeView);
     this._subscriptions.push(eventController.setDefaultView.bind(eventController));
   }
 

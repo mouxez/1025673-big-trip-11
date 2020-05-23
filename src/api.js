@@ -1,4 +1,3 @@
-// import {getRandomString} from './util.js';
 import ModelEvent from './models/model-event.js';
 import ModelOffers from './models/model-event.js';
 import ModelDestinations from './models/model-destinations';
@@ -32,13 +31,15 @@ export const API = class {
 
   }
   createEvent(event) {
+    const dataRAW = ModelEvent.toRAW(event);
     return this._load({
       url: `${this._url}points`,
       method: `POST`,
-      body: JSON.stringify(event),
+      body: JSON.stringify(dataRAW),
       headers: new Headers({'Content-Type': `application/json`})
     })
-    .then((response) => response.json());
+    .then((response) => response.json())
+    .then(ModelEvent.parseEvent);
   }
   deleteEvent(id) {
     return this._load({
@@ -72,9 +73,7 @@ export const API = class {
     headers.append(`Authorization`, this._authorization);
     return fetch(url, {method, body, headers})
     .then(this._checkStatus)
-
     .catch((error) => {
-      console.error(`fetch error: ${error}`);
       throw error;
     });
   }
