@@ -78,11 +78,11 @@ export default class EventController {
       this._eventData.price = +formData.get(`event-price`);
       this._eventData.start = moment(formData.get(`event-start-time`), `D.MM.YY h:mm`).format();
       this._eventData.end = moment(formData.get(`event-end-time`), `D.MM.YY h:mm`).format();
-      this._eventData.offers = this._eventData.offers.map((it) => {
+      this._eventData.offers = Array.from(this._eventEdit.getElement().querySelectorAll(`.event__offer-selector`)).map((it) => {
         return {
-          title: it.title,
-          price: it.price,
-          isChecked: formData.get(`event-offer-${it.title}`) === `on` ? true : false
+          title: it.querySelector(`.event__offer-title`).textContent,
+          price: +it.querySelector(`.event__offer-price`).textContent,
+          accepted: it.querySelector(`.event__offer-checkbox`).checked,
         };
       });
       this._eventData.isFavorite = formData.get(`event-favorite`) === `on` ? true : false;
